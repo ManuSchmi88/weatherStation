@@ -279,7 +279,7 @@ class weatherstation():
                 elif self.printFlag == "16":
                     print("printing average wind direction")
                     self.printStr = "WindDir_Avg"
-                    self.labelStr = "Wind direction"
+                    self.labelStr = "Wind direction [°]"
                     break
                 elif self.printFlag == "17":
                     print("printing ")
@@ -289,7 +289,7 @@ class weatherstation():
                 elif self.printFlag == "18":
                     print("printing wind direction")
                     self.printStr = "WindDir_D1_WVT"
-                    self.labelStr = "WindDirection"
+                    self.labelStr = "WindDirection [°]"
                     break
                 elif self.printFlag == "19":
                     print("printing total rain mm")
@@ -311,15 +311,16 @@ class weatherstation():
         #self.df[self.sd : self.ed][self.printStr][self.df[self.sd : self.ed][self.printStr] == ' None'] = np.nan
         #self.df[self.df == ' None'] = np.nan
         fig, ax = plt.subplots(figsize = [10,6])
-        line = plt.plot(self.df[self.sd : self.ed][self.printStr],'r')
+        ax.plot(self.df[self.sd : self.ed][self.printStr],'r')
         minVal = min(pd.to_numeric(self.df[self.sd : self.ed][self.printStr]))
         maxVal = max(pd.to_numeric(self.df[self.sd : self.ed][self.printStr]))
-        #plt.xlim()
-        plt.ylim([minVal-3,maxVal+3])
-        plt.title(self.statstrg + ' , ' + self.printStr)
-        plt.ylabel(self.labelStr)
-        if self.printFlag == "16" or "18":
-            plt.yticks(np.arange(0,360,25))
-            plt.ylim([0,360])
+        ax.set_title(self.statstrg + ', ' + self.printStr)
+        ax.set_ylabel(self.labelStr)
+        if self.printFlag in ("16","18"):
+            ax.set_yticks(np.arange(0, 360, 11.25))
+            ax.set_ylim([0,360])
+        else:
+            ax.set_ylim([minVal, maxVal])
 
         plt.savefig(self.statName + '_' + self.printStr + '.png', dpi=720)
+        plt.close()

@@ -35,4 +35,4 @@ if __name__ == '__main__':
         if startAgain == "n":
             break
         else:
-            print("'y' or 'n'... thats not so difficult, is it? :D")
+            print("'y' or 'n'")
